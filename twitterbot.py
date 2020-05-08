@@ -339,6 +339,7 @@ def get_daily_header(timezone="America/Cuiaba"):
     TIMEZONE = pytz.timezone(timezone)
     now = datetime.datetime.now(TIMEZONE)
 
+    minute = now.minute
     hour = now.hour
     day = now.day
     month = now.month
@@ -353,7 +354,7 @@ def get_daily_header(timezone="America/Cuiaba"):
     else:
         greeting = ""
 
-    header = f"{greeting}\n\nHoje é dia {day:0>2}/{month:0>2}/{year}.\n\nAtualizações:"
+    header = f"{greeting}\n\nHoje é dia {day:0>2}/{month:0>2}/{year}.\n\nAgora são {hour}h{minute} (GMT -04:00).\n\nAtualizações:"
 
     return header
 
@@ -374,11 +375,11 @@ def wait_until(hour, minute, enablezone=False, timezone="America/Cuiaba"):
     rest = minutes_rest + seconds_rest
 
     if current_time.hour < hour:
-        time_to_be_slept = (((hour - 1) - current_time.hour) * 60 * 60 + rest) - 300
+        time_to_be_slept = (((hour - 1) - current_time.hour) * 60 * 60 + rest)
     elif (current_time.hour == hour) and (current_time.minute < minute):
-        time_to_be_slept = (rest - 3600) - 300
+        time_to_be_slept = (rest - 3600)
     else:
-        time_to_be_slept = (((23 + hour) - current_time.hour) * 60 * 60 + rest) - 300
+        time_to_be_slept = (((23 + hour) - current_time.hour) * 60 * 60 + rest)
 
     time_to_be_slept = 0 if time_to_be_slept < 0 else time_to_be_slept
 
@@ -397,13 +398,13 @@ def main(username, default_hour, default_minute):
 
         for _ in range(3):
             try:
-                daily_header = get_daily_header()
-
                 currencies_text = get_currencies()
 
                 stock_indexes_text = get_stock_indexes()
 
                 news_list = get_every_news_and_name()
+
+                daily_header = get_daily_header()
 
             except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
                 time.sleep(3)
@@ -443,4 +444,4 @@ def main(username, default_hour, default_minute):
 
 
 if __name__ == "__main__":
-    main("Username", default_hour=6, default_minute=0)
+    main("username", default_hour=6, default_minute=0)
