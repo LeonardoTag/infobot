@@ -161,7 +161,7 @@ def get_the_wall_street_journal():
     """
     Returns a list with the website's top 5 news' link and title.
     """
-    PATTERN = re.compile(r"<a class=\"\" href=\"(.+?)\">(.+?)<\/a>")
+    PATTERN = re.compile(r"<a class=\"\" href=\"(.+?)\">([^<>]+?)<\/a>")
 
     response = requests.get(
         "https://www.wsj.com/", headers={"User-Agent": "Mozilla/5.0"}
@@ -375,73 +375,85 @@ def wait_until(hour, minute, enablezone=False, timezone="America/Cuiaba"):
     rest = minutes_rest + seconds_rest
 
     if current_time.hour < hour:
-        time_to_be_slept = (((hour - 1) - current_time.hour) * 60 * 60 + rest)
+        time_to_be_slept = (((hour - 1) - current_time.hour) * 60 * 60 + rest) - 60
     elif (current_time.hour == hour) and (current_time.minute < minute):
-        time_to_be_slept = (rest - 3600)
+        time_to_be_slept = (rest - 3600) - 60
     else:
-        time_to_be_slept = (((23 + hour) - current_time.hour) * 60 * 60 + rest)
+        time_to_be_slept = (((23 + hour) - current_time.hour) * 60 * 60 + rest) - 60
 
     time_to_be_slept = 0 if time_to_be_slept < 0 else time_to_be_slept
 
     time.sleep(time_to_be_slept)
 
 
-def main(username, default_hour, default_minute):
+def main():
     """
     Runs the program entirely.
     """
-    hour = int(sys.argv[1]) if len(sys.argv) >= 2 else default_hour
-    minute = int(sys.argv[2]) if len(sys.argv) >= 3 else default_minute
+    username = input("Twitter Username: ")
+    times_a_day = int(input("Threads a day: "))
+
+    schedule = list()
+
+    for i in range(times_a_day):
+        hour = input("Hora da " + str(i + 1) + "ª execução: ")
+        minute = input("Minuto da " + str(i + 1) + "ª execução: ")
+        schedule.append((hour, minute))
 
     while True:
-        wait_until(hour, minute, enablezone=True)
 
-        for _ in range(3):
-            try:
-                currencies_text = get_currencies()
+        for hour, minute in schedule:
 
-                stock_indexes_text = get_stock_indexes()
+            wait_until(hour, minute, enablezone=True)
 
-                news_list = get_every_news_and_name()
+            # GETTING DATA
 
-                daily_header = get_daily_header()
+            for _ in range(3):
+                try:
+                    currencies_text = get_currencies()
 
-            except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
-                time.sleep(3)
-                continue
+                    stock_indexes_text = get_stock_indexes()
+
+                    news_list = get_every_news_and_name()
+
+                    daily_header = get_daily_header()
+
+                except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
+                    time.sleep(3)
+                    continue
+                else:
+                    break
             else:
-                break
-        else:
-            raise Exception("Erro tentando conseguir as informações externas.")
+                raise Exception("Erro tentando conseguir as informações externas.")
 
-        # TWEETING
+            # TWEETING
 
-        # Daily Header
-        tweet(daily_header)
-        time.sleep(5)
-        daily_header_id = get_my_last_tweet_id()
-
-        # Currencies
-        reply(currencies_text, username, daily_header_id)
-        time.sleep(3)
-
-        # Stock Indexes
-        reply(stock_indexes_text, username, daily_header_id)
-        time.sleep(3)
-
-        # News
-        reply("Notícias:", username, daily_header_id)
-        time.sleep(5)
-        news_id = get_my_last_tweet_id()
-
-        for website_name, text_list in news_list:
-            reply(website_name, username, news_id)
+            # Daily Header
+            tweet(daily_header)
             time.sleep(5)
-            website_name_id = get_my_last_tweet_id()
-            for text in text_list:
-                reply(text, username, website_name_id)
+            daily_header_id = get_my_last_tweet_id()
+
+            # Currencies
+            reply(currencies_text, username, daily_header_id)
+            time.sleep(3)
+
+            # Stock Indexes
+            reply(stock_indexes_text, username, daily_header_id)
+            time.sleep(3)
+
+            # News
+            reply("Notícias:", username, daily_header_id)
+            time.sleep(5)
+            news_id = get_my_last_tweet_id()
+
+            for website_name, text_list in news_list:
+                reply(website_name, username, news_id)
                 time.sleep(5)
+                website_name_id = get_my_last_tweet_id()
+                for text in text_list:
+                    reply(text, username, website_name_id)
+                    time.sleep(5)
 
 
 if __name__ == "__main__":
-    main("username", default_hour=6, default_minute=0)
+    main()
