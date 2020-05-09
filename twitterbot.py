@@ -28,17 +28,17 @@ from urllib.request import urlopen
 
 try:
     import requests
-except ImportError:
+except ModuleNotFoundError:
     raise Exception("Requests not installed. (pip3 install requests)")
 
 try:
     import tweepy
-except ImportError:
+except ModuleNotFoundError:
     raise Exception("Tweepy not installed. (pip3 install tweepy)")
 
 try:
     import pytz
-except ImportError:
+except ModuleNotFoundError:
     raise Exception("Pytz not installed. (pip3 install pytz)")
 
 
@@ -556,6 +556,8 @@ def main(
     :param API_SECRET_KEY: Twitter's Api secret key.
     :param ACCESS_TOKEN: Twitter's Api access token.
     :param ACCESS_TOKEN_SECRET: Twitter's Api access token secret.
+
+    :return: None
     """
 
     schedule = request_schedule_input()
@@ -578,7 +580,7 @@ def main(
                     continue
 
             wait_until(
-                hour=hour, minute=minute, timezone=timezone, advance=60, enablezone=True
+                hour=hour, minute=minute, timezone=timezone, enablezone=True
             )
 
             # GETTING DATA

@@ -54,17 +54,17 @@ from urllib.request import urlopen
 
 try:
     import requests
-except ImportError:
+except ModuleNotFoundError:
     raise Exception(&#34;Requests not installed. (pip3 install requests)&#34;)
 
 try:
     import tweepy
-except ImportError:
+except ModuleNotFoundError:
     raise Exception(&#34;Tweepy not installed. (pip3 install tweepy)&#34;)
 
 try:
     import pytz
-except ImportError:
+except ModuleNotFoundError:
     raise Exception(&#34;Pytz not installed. (pip3 install pytz)&#34;)
 
 
@@ -582,6 +582,8 @@ def main(
     :param API_SECRET_KEY: Twitter&#39;s Api secret key.
     :param ACCESS_TOKEN: Twitter&#39;s Api access token.
     :param ACCESS_TOKEN_SECRET: Twitter&#39;s Api access token secret.
+
+    :return: None
     &#34;&#34;&#34;
 
     schedule = request_schedule_input()
@@ -604,7 +606,7 @@ def main(
                     continue
 
             wait_until(
-                hour=hour, minute=minute, timezone=timezone, advance=60, enablezone=True
+                hour=hour, minute=minute, timezone=timezone, enablezone=True
             )
 
             # GETTING DATA
@@ -1169,7 +1171,8 @@ if __name__ == &#34;__main__&#34;:
 :param API_KEY: Twitter's Api key.
 :param API_SECRET_KEY: Twitter's Api secret key.
 :param ACCESS_TOKEN: Twitter's Api access token.
-:param ACCESS_TOKEN_SECRET: Twitter's Api access token secret.</p></div>
+:param ACCESS_TOKEN_SECRET: Twitter's Api access token secret.</p>
+<p>:return: None</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1186,6 +1189,8 @@ if __name__ == &#34;__main__&#34;:
     :param API_SECRET_KEY: Twitter&#39;s Api secret key.
     :param ACCESS_TOKEN: Twitter&#39;s Api access token.
     :param ACCESS_TOKEN_SECRET: Twitter&#39;s Api access token secret.
+
+    :return: None
     &#34;&#34;&#34;
 
     schedule = request_schedule_input()
@@ -1208,7 +1213,7 @@ if __name__ == &#34;__main__&#34;:
                     continue
 
             wait_until(
-                hour=hour, minute=minute, timezone=timezone, advance=60, enablezone=True
+                hour=hour, minute=minute, timezone=timezone, enablezone=True
             )
 
             # GETTING DATA
