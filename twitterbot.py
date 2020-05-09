@@ -579,9 +579,7 @@ def main(
                         next(schedule_iterator)
                     continue
 
-            wait_until(
-                hour=hour, minute=minute, timezone=timezone, enablezone=True
-            )
+            wait_until(hour=hour, minute=minute, timezone=timezone, enablezone=True)
 
             # GETTING DATA
 
