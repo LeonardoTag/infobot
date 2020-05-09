@@ -1,0 +1,1494 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>twitterbot API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>twitterbot</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Created by Leonardo F. Tag.
+#
+# A Twitter bot programmed for my personal use, hence the Portuguese
+# and R$ signs.
+#
+# It tweets information about currencies prices, stock indexes, and
+# recent news whenever programmed.
+#
+# To adjust it to your use, change the information in the last if
+# statement to your data.
+#
+# Feel free to use the information in this module however you like.
+#
+# No copyright applies.
+
+# IMPORTING MODULES FROM THE STANDARD LIBRARY
+
+import contextlib
+import datetime
+import html
+import re
+import sys
+import time
+from urllib.parse import urlencode
+from urllib.request import urlopen
+
+# CHECKING IF THE REQUIRED THIRD-PARTY MODULES ARE INSTALLED AND IMPORTING THEM
+
+try:
+    import requests
+except ImportError:
+    raise Exception(&#34;Requests not installed. (pip3 install requests)&#34;)
+
+try:
+    import tweepy
+except ImportError:
+    raise Exception(&#34;Tweepy not installed. (pip3 install tweepy)&#34;)
+
+try:
+    import pytz
+except ImportError:
+    raise Exception(&#34;Pytz not installed. (pip3 install pytz)&#34;)
+
+
+# UTILITIES
+
+
+def shorten_url(url):
+    &#34;&#34;&#34;
+    Takes an url and returns it shortened.
+
+    :param url: Desired web address.
+
+    :return: Desired web address shortened. (http://tinyurl.com/XXXXXXXX)
+    &#34;&#34;&#34;
+    request_url = &#34;http://tinyurl.com/api-create.php?&#34; + urlencode({&#34;url&#34;: url})
+    with contextlib.closing(urlopen(request_url)) as response:
+        return response.read().decode(&#34;utf-8&#34;)
+
+
+def wait_until(hour, minute, timezone, delay=0, advance=0, enablezone=False):
+    &#34;&#34;&#34;
+    Takes an hour mark, a minute mark, and a timezone, and waits until the given time in the given timezone.
+
+    :param hour: Desired hour mark.
+    :param minute: Desired minute mark.
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+    :param delay: Optional delay. (0 as default.)
+    :param advance: Optional advance. (0 as default.)
+    :param enablezone: True: Enables the timezone feature. False: Disables the timezone feature. (False as default.)
+
+    :return: None
+    &#34;&#34;&#34;
+    if timezone:
+        TIMEZONE = pytz.timezone(timezone)
+        current_time = datetime.datetime.now(TIMEZONE)
+    else:
+        current_time = datetime.datetime.now()
+
+    # Calculate the remaining time in seconds to complete an hour.
+    minutes_rest = ((59 + minute) - current_time.minute) * 60
+    seconds_rest = 60 - current_time.second
+    rest = minutes_rest + seconds_rest
+
+    if current_time.hour &lt; hour:
+        time_to_be_slept = ((hour - 1) - current_time.hour) * 60 * 60 + rest
+    elif (current_time.hour == hour) and (current_time.minute &lt; minute):
+        time_to_be_slept = rest - 3600
+    else:
+        time_to_be_slept = ((23 + hour) - current_time.hour) * 60 * 60 + rest
+
+    time_to_be_slept = time_to_be_slept + delay - advance
+
+    time_to_be_slept = (
+        0 if time_to_be_slept &lt; 0 else time_to_be_slept
+    )  # Used to keep time nonnegative and to become 0 if negative.
+
+    time.sleep(time_to_be_slept)
+
+
+# TWITTER
+
+
+def authenticate(API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET):
+    &#34;&#34;&#34;
+    Takes Twitter&#39;s Api Key, Api Secret Key, Access Token, and Access Token Secret, returns an authenticated Twitter Api Object.
+
+    :param API_KEY: Twitter&#39;s Api key.
+    :param API_SECRET_KEY: Twitter&#39;s Api secret key.
+    :param ACCESS_TOKEN: Twitter&#39;s Api access token.
+    :param ACCESS_TOKEN_SECRET: Twitter&#39;s Api access token secret.
+
+    :return: An authenticated Tweepy Api Object.
+    &#34;&#34;&#34;
+    authentication = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
+    authentication.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
+    return tweepy.API(authentication)
+
+
+def tweet(api, message):
+    &#34;&#34;&#34;
+    Takes an authenticated Tweepy Api Object, a message and tweets it.
+
+    :param api: An authenticated Tweepy Api Object.
+    :param message: Desired message to tweet.
+
+    return: None
+    &#34;&#34;&#34;
+    api.update_status(status=message)
+
+
+def reply(api, message, username, status_id):
+    &#34;&#34;&#34;
+    Takes an authenticated Tweepy Api Object, a message, an username and a status id and replies it with the message.
+
+    :param api: An authenticated Tweepy Api Object.
+    :param message: Desired message to reply.
+    :param username: Twitter account username without @.
+    :param status_id: The id of the tweet to be replied.
+
+    :return: None
+    &#34;&#34;&#34;
+    api.update_status(
+        status=&#34;@&#34; + username + &#34;\n&#34; + message,
+        in_reply_to_status_id=status_id,  # The @username must be used for the message to be recognized as a reply.
+    )
+
+
+def get_my_last_tweet_id(api):
+    &#34;&#34;&#34;
+    Takes an authenticated Tweepy Api Object and returns the Twitter account&#39;s last tweet&#39;s id.
+
+    :param api: An authenticated Tweepy Api Object.
+
+    :return: Int with Twitter account&#39;s last tweet&#39;s id.
+    &#34;&#34;&#34;
+    for _ in range(3):
+        try:
+            last_tweet = api.user_timeline(id=api.me().id, count=1)[0]
+        except IndexError:
+            time.sleep(3)
+            continue
+        else:
+            break
+    else:
+        raise Exception(&#34;The last tweet was not found.&#34;)
+
+    return last_tweet.id
+
+
+# DAILY HEADER
+
+
+def get_daily_header(timezone):
+    &#34;&#34;&#34;
+    Takes a timezone and returns a header for the daily tweets.
+
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+
+    :return: A formated string for the first tweet.
+    &#34;&#34;&#34;
+    TIMEZONE = pytz.timezone(timezone)
+    now = datetime.datetime.now(TIMEZONE)
+
+    minute = now.minute
+    hour = now.hour
+    day = now.day
+    month = now.month
+    year = now.year
+
+    if hour &gt;= 0 and hour &lt;= 11:
+        greeting = &#34;Bom dia. &#34;
+    #               Good morning
+    elif hour &gt;= 12 and hour &lt;= 17:
+        greeting = &#34;Boa tarde. &#34;
+    #               Good afternoon
+    elif hour &gt;= 18 and hour &lt;= 23:
+        greeting = &#34;Boa noite. &#34;
+    #               Good evening
+    else:
+        greeting = &#34;&#34;
+
+    header = f&#34;{greeting}\n\nHoje é dia {day:0&gt;2}/{month:0&gt;2}/{year}.\n\nAgora são {hour:0&gt;2}h{minute:0&gt;2} (GMT -04:00).\n\nAtualizações:&#34;
+    #                        Today is the day                            It is (Timewise)               My local timezone   Updates
+    return header
+
+
+# CURRENCIES
+
+
+def get_currencies():
+    &#34;&#34;&#34;
+    Returns a string with some currencies&#39; prices in reais.
+
+    :return: Formated string for the currencies reply.
+    &#34;&#34;&#34;
+    CURRENCIES = {
+        &#34;1 USD&#34;: &#34;https://dolarhoje.com/&#34;,
+        &#34;1 EUR&#34;: &#34;https://dolarhoje.com/euro-hoje/&#34;,
+        &#34;1 GBP&#34;: &#34;https://dolarhoje.com/libra-hoje/&#34;,
+        &#34;1 BTC&#34;: &#34;https://dolarhoje.com/bitcoin-hoje/&#34;,
+        &#34;1 NANO&#34;: &#34;https://dolarhoje.com/nano-hoje/&#34;,
+        &#34;1 g de ouro&#34;: &#34;https://dolarhoje.com/ouro-hoje/&#34;,
+    }
+
+    PATTERN = re.compile(r&#34;id=\&#34;nacional\&#34; value=\&#34;(\d+,\d\d)\&#34;&#34;)
+
+    final_text = &#34;&#34;
+
+    for currency, link in CURRENCIES.items():
+        response = requests.get(link, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;})
+        response.raise_for_status()
+        value = re.search(PATTERN, response.text).group(1)
+        final_text += f&#34;{currency}  -  R${value}\n&#34;
+
+    return final_text
+
+
+# STOCK INDEXES
+
+
+def get_stock_indexes():
+    &#34;&#34;&#34;
+    Returns a string with some stocks&#39; share prices.
+
+    :return: Formated string for the stock Indexes reply.
+    &#34;&#34;&#34;
+    INDEXES = {
+        &#34;IBOVESPA (BRL)&#34;: &#34;https://br.investing.com/indices/bovespa&#34;,
+        &#34;EWZ (USD)&#34;: &#34;https://br.investing.com/etfs/ishares-brazil-index&#34;,
+        &#34;S&amp;P 500 (USD)&#34;: &#34;https://br.investing.com/indices/us-spx-500&#34;,
+        &#34;DIA (USD)&#34;: &#34;https://br.investing.com/etfs/diamonds-trust&#34;,
+        &#34;Brent Oil (USD)&#34;: &#34;https://br.investing.com/commodities/brent-oil-opinion/&#34;,
+    }
+
+    PATTERN = re.compile(
+        r&#34;&lt;td id=\&#34;_last_\d+\&#34; class=\&#34;pid-\d+-last\&#34;&gt;(\d+(\.\d+)*,\d\d)&lt;\/td&gt;&#34;
+    )
+    PATTERN_2 = re.compile(
+        r&#34;&lt;span class=(.*?)(green|red)Font(.*?)((\+|-)\d+(\.\d+)*,\d\d)(.*?)&lt;\/span&gt;&#34;
+    )
+    PATTERN_3 = re.compile(
+        r&#34;&lt;span class=(.*?)(green|red)Font(.*?)((\+|-)\d+(\.\d+)*,\d\d%)(.*?)&lt;\/span&gt;&#34;
+    )
+
+    final_text = &#34;&#34;
+
+    for index, link in INDEXES.items():
+        response = requests.get(link, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;})
+        response.raise_for_status()
+        value = re.search(PATTERN, response.text).group(1)
+        change = re.search(PATTERN_2, response.text).group(4)
+        change_percentage = re.search(PATTERN_3, response.text).group(4)
+        final_text += f&#34;{index}  -  {value} ({change} | {change_percentage})\n&#34;
+
+    return final_text
+
+
+# NEWS
+
+
+def get_the_economist():
+    &#34;&#34;&#34;
+    Returns a list with The Economist&#39;s first 5 news&#39; links and titles.
+
+    :return: List of strings with the first 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(
+        r&#34;&lt;a class=\&#34;headline-link\&#34; href=\&#34;(.+?)\&#34;&gt;&lt;span.*?&gt;(.+?)&lt;\/span&gt;&lt;\/a&gt;&#34;
+    )
+
+    response = requests.get(
+        &#34;https://economist.com&#34;, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;}
+    )
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    text_list = list()
+
+    for i in range(5):
+        url = &#34;https://economist.com&#34; + matches[i][0]
+        short_url = shorten_url(url)
+        text = html.unescape(matches[i][1])
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list
+
+
+def get_the_wall_street_journal():
+    &#34;&#34;&#34;
+    Returns a list with The Wall Street Journal&#39;s first 5 news&#39; links and titles.
+
+    :return: List of strings with the first 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(r&#34;&lt;a class=\&#34;\&#34; href=\&#34;(.+?)\&#34;&gt;([^&lt;&gt;]+?)&lt;\/a&gt;&#34;)
+
+    response = requests.get(
+        &#34;https://www.wsj.com/&#34;, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;}
+    )
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    text_list = list()
+
+    for i in range(5):
+        url = matches[i][0]
+        short_url = shorten_url(url)
+        text = html.unescape(matches[i][1])
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list
+
+
+def get_o_antagonista():
+    &#34;&#34;&#34;
+    Returns a list with O Antagonista&#39;s first 5 news&#39; links and titles.
+
+    :return: List of strings with the first 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(
+        r&#34;&lt;div class=\&#34;article_link\&#34;&gt;.*\n.*&lt;a href=\&#34;(.+?)\&#34; title=\&#34;(.+?)\&#34;.*class=\&#34;link_post\&#34;&gt;&#34;
+    )
+
+    response = requests.get(
+        &#34;https://www.oantagonista.com&#34;, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;}
+    )
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    text_list = list()
+
+    for i in range(5):
+        url = matches[i][0]
+        short_url = shorten_url(url)
+        text = html.unescape(matches[i][1])
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list
+
+
+def get_insurgere():
+    &#34;&#34;&#34;
+    Returns a list with Insurgere&#39;s first 5 news&#39; links and titles.
+
+    :return: List of strings with the first 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(
+        r&#34;&lt;h2 class=\&#34;entry-title\&#34;&gt;&lt;a href=\&#34;(.+?)\&#34; rel=\&#34;bookmark\&#34;&gt;(.+?)&lt;\/a&gt;&lt;\/h2&gt;&#34;
+    )
+
+    headers = {
+        &#34;User-agent&#34;: &#34;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A&#34;
+    }
+    response = requests.get(&#34;https://insurgere.com.br&#34;, headers=headers)
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    text_list = list()
+
+    for i in range(5):
+        url = matches[i][0]
+        short_url = shorten_url(url)
+        text = html.unescape(matches[i][1])
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list
+
+
+def get_hacker_news():
+    &#34;&#34;&#34;
+    Returns a list with The Hacker News&#39;s 5 most voted news&#39; links and titles.
+
+    :return: List of strings with the most voted 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(r&#34;(&lt;tr class=\&#39;athing\&#39; id=\&#39;\d+\&#39;&gt;.*?\n.*?\n.*?&lt;\/td&gt;&lt;\/tr&gt;)&#34;)
+    LINK_AND_TITLE_PATTERN = re.compile(
+        r&#34;&lt;a href=\&#34;(.+?)\&#34; class=\&#34;storylink\&#34;&gt;(.+?)&lt;\/a&gt;&#34;
+    )
+    VOTES_PATTERN = re.compile(r&#34;(\d+) points&#34;)
+
+    response = requests.get(
+        &#34;https://news.ycombinator.com/news&#34;, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;}
+    )
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    matches_list = list()
+
+    for i in matches:
+        try:
+            link_and_title_matches = re.search(LINK_AND_TITLE_PATTERN, i)
+            link = link_and_title_matches.group(1)
+            title = link_and_title_matches.group(2)
+            votes = re.search(VOTES_PATTERN, i).group(1)
+            matches_list.append({&#34;title&#34;: title, &#34;link&#34;: link, &#34;votes&#34;: votes})
+        except AttributeError:
+            pass
+
+    matches_list = sorted(matches_list, key=lambda x: int(x[&#34;votes&#34;]), reverse=True)
+
+    text_list = list()
+
+    for i in range(5):
+        url = matches_list[i][&#34;link&#34;]
+        if url[:4] != &#34;http&#34;:
+            url = &#34;https://news.ycombinator.com/&#34; + url
+        short_url = shorten_url(url)
+        text = html.unescape(matches_list[i][&#34;title&#34;])
+        votes = matches_list[i][&#34;votes&#34;]
+        text = f&#34;({votes} votos) {text}&#34;
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list
+
+
+def get_every_news_and_name():
+    &#34;&#34;&#34;
+    Returns a list of tuples with websites and news lists.
+
+    :return: List of tuples with the first element being a string with the website name and the second a list with the news.
+    &#34;&#34;&#34;
+    the_economist_list = get_the_economist()
+    the_wall_street_journal_list = get_the_wall_street_journal()
+    o_antagonista_list = get_o_antagonista()
+    insurgere_list = get_insurgere()
+    hacker_news_list = get_hacker_news()
+
+    websites_list = [
+        (&#34;The Economist&#34;, the_economist_list),
+        (&#34;The Wall Street Journal&#34;, the_wall_street_journal_list),
+        (&#34;O Antagonista&#34;, o_antagonista_list),
+        (&#34;Insurgere&#34;, insurgere_list),
+        (&#34;Hacker News&#34;, hacker_news_list),
+    ]
+
+    return websites_list
+
+
+# SCHEDULE
+
+
+def request_schedule_input():
+    &#34;&#34;&#34;
+    Requests the user the wished schedule of tweets and returns a list with it.
+
+    :return: A sorted list of tuples with the first element being the hour and the second the minute, according to the schedule input by the user.
+    &#34;&#34;&#34;
+    times_a_day = int(input(&#34;Threads a day: &#34;))
+    assert times_a_day &gt; 0, &#34;Times a day must be greater than 0.&#34;
+
+    print()
+
+    schedule = list()
+
+    for index in range(1, times_a_day + 1):
+
+        if times_a_day &gt; 1:
+            if str(index)[-1] == &#34;1&#34;:
+                ordinal_sign = &#34;st e&#34;
+            elif str(index)[-1] == &#34;2&#34;:
+                ordinal_sign = &#34;nd e&#34;
+            elif str(index)[-1] == &#34;3&#34;:
+                ordinal_sign = &#34;rd e&#34;
+            else:
+                ordinal_sign = &#34;th e&#34;
+        else:
+            index, ordinal_sign = &#34;&#34;, &#34;E&#34;
+
+        hour = int(input(f&#34;{index}{ordinal_sign}xecution hour mark: &#34;))
+        assert 0 &lt;= hour &lt; 24, &#34;Hour invalid.&#34;
+
+        minute = int(input(f&#34;{index}{ordinal_sign}xecution minute mark: &#34;))
+        assert 0 &lt;= minute &lt; 60, &#34;Minute invalid.&#34;
+
+        schedule.append((hour, minute))
+
+        print()
+
+    return sorted(list(set(schedule)))
+
+
+# SKIPS
+
+
+def get_skips_needed(schedule, timezone):
+    &#34;&#34;&#34;
+    Takes the tweet schedule and the timezone and returns how many time marks should be skipped.
+
+    :param schedule: List generated with the request_schedule_input function.
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+
+    :return: An int with the needed amount of time marks to be skipped in order to execute the next one in time order.
+    &#34;&#34;&#34;
+    TIMEZONE = pytz.timezone(timezone)
+    current_time = datetime.datetime.now(TIMEZONE)
+    current_hour_and_minute = (current_time.hour, current_time.minute)
+
+    if current_hour_and_minute in schedule:
+        current_index = schedule.index(current_hour_and_minute) + 1
+        comparison_list = list()
+    else:
+        comparison_list = schedule.copy()
+        comparison_list.append(current_hour_and_minute)
+        comparison_list.sort()
+        current_index = comparison_list.index(current_hour_and_minute)
+
+    if (current_index == 0) or (current_index == len(comparison_list)):
+        return 0
+    else:
+        return current_index
+
+
+# MAIN FUNCTION
+
+
+def main(
+    username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
+):
+    &#34;&#34;&#34;
+    Runs the program.
+
+    :param username: Twitter account username without @.
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+    :param API_KEY: Twitter&#39;s Api key.
+    :param API_SECRET_KEY: Twitter&#39;s Api secret key.
+    :param ACCESS_TOKEN: Twitter&#39;s Api access token.
+    :param ACCESS_TOKEN_SECRET: Twitter&#39;s Api access token secret.
+    &#34;&#34;&#34;
+
+    schedule = request_schedule_input()
+
+    skips = get_skips_needed(schedule=schedule, timezone=timezone)
+
+    first_time_looping = True
+
+    while True:
+        schedule_iterator = iter(schedule)
+
+        for hour, minute in schedule_iterator:
+            if first_time_looping:
+                first_time_looping = False
+                if skips == 0:
+                    pass
+                else:
+                    for _ in range(skips - 1):
+                        next(schedule_iterator)
+                    continue
+
+            wait_until(
+                hour=hour, minute=minute, timezone=timezone, advance=60, enablezone=True
+            )
+
+            # GETTING DATA
+
+            for _ in range(3):
+                try:
+                    currencies_text = get_currencies()
+                    stock_indexes_text = get_stock_indexes()
+                    news_list = get_every_news_and_name()
+                    daily_header = get_daily_header(timezone=timezone)
+                except (
+                    requests.exceptions.HTTPError,
+                    requests.exceptions.ConnectionError,
+                ):
+                    time.sleep(3)
+                    continue
+                else:
+                    break
+            else:
+                raise Exception(&#34;Erro tentando conseguir as informações externas.&#34;)
+
+            # TWEETING
+
+            api = authenticate(
+                API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
+            )
+
+            # Daily Header
+            tweet(api, daily_header)
+            time.sleep(5)
+            daily_header_id = get_my_last_tweet_id(api)
+
+            # Currencies
+            reply(api, currencies_text, username, daily_header_id)
+            time.sleep(3)
+
+            # Stock Indexes
+            reply(api, stock_indexes_text, username, daily_header_id)
+            time.sleep(3)
+
+            # News
+            reply(api, &#34;Notícias:&#34;, username, daily_header_id)
+            #           News
+            time.sleep(5)
+            news_id = get_my_last_tweet_id(api)
+
+            for website_name, text_list in news_list:
+                reply(api, website_name, username, news_id)
+                time.sleep(5)
+                website_name_id = get_my_last_tweet_id(api)
+                for text in text_list:
+                    reply(api, text, username, website_name_id)
+                    time.sleep(5)
+
+
+if __name__ == &#34;__main__&#34;:
+    main(
+        username=&#34;username&#34;,  # Twitter account username without @.
+        timezone=&#34;timezone&#34;,  # Timezones available at https://stackoverflow.com/q/13866926
+        API_KEY=&#34;XXX&#34;,  # Get yours at https://developer.twitter.com/apps
+        API_SECRET_KEY=&#34;XXX&#34;,  # Get yours at https://developer.twitter.com/apps
+        ACCESS_TOKEN=&#34;XXX&#34;,  # Get yours at https://developer.twitter.com/apps
+        ACCESS_TOKEN_SECRET=&#34;XXX&#34;,  # Get yours at https://developer.twitter.com/apps
+    )</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="twitterbot.authenticate"><code class="name flex">
+<span>def <span class="ident">authenticate</span></span>(<span>API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes Twitter's Api Key, Api Secret Key, Access Token, and Access Token Secret, returns an authenticated Twitter Api Object.</p>
+<p>:param API_KEY: Twitter's Api key.
+:param API_SECRET_KEY: Twitter's Api secret key.
+:param ACCESS_TOKEN: Twitter's Api access token.
+:param ACCESS_TOKEN_SECRET: Twitter's Api access token secret.</p>
+<p>:return: An authenticated Tweepy Api Object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def authenticate(API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET):
+    &#34;&#34;&#34;
+    Takes Twitter&#39;s Api Key, Api Secret Key, Access Token, and Access Token Secret, returns an authenticated Twitter Api Object.
+
+    :param API_KEY: Twitter&#39;s Api key.
+    :param API_SECRET_KEY: Twitter&#39;s Api secret key.
+    :param ACCESS_TOKEN: Twitter&#39;s Api access token.
+    :param ACCESS_TOKEN_SECRET: Twitter&#39;s Api access token secret.
+
+    :return: An authenticated Tweepy Api Object.
+    &#34;&#34;&#34;
+    authentication = tweepy.OAuthHandler(API_KEY, API_SECRET_KEY)
+    authentication.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
+    return tweepy.API(authentication)</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_currencies"><code class="name flex">
+<span>def <span class="ident">get_currencies</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a string with some currencies' prices in reais.</p>
+<p>:return: Formated string for the currencies reply.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_currencies():
+    &#34;&#34;&#34;
+    Returns a string with some currencies&#39; prices in reais.
+
+    :return: Formated string for the currencies reply.
+    &#34;&#34;&#34;
+    CURRENCIES = {
+        &#34;1 USD&#34;: &#34;https://dolarhoje.com/&#34;,
+        &#34;1 EUR&#34;: &#34;https://dolarhoje.com/euro-hoje/&#34;,
+        &#34;1 GBP&#34;: &#34;https://dolarhoje.com/libra-hoje/&#34;,
+        &#34;1 BTC&#34;: &#34;https://dolarhoje.com/bitcoin-hoje/&#34;,
+        &#34;1 NANO&#34;: &#34;https://dolarhoje.com/nano-hoje/&#34;,
+        &#34;1 g de ouro&#34;: &#34;https://dolarhoje.com/ouro-hoje/&#34;,
+    }
+
+    PATTERN = re.compile(r&#34;id=\&#34;nacional\&#34; value=\&#34;(\d+,\d\d)\&#34;&#34;)
+
+    final_text = &#34;&#34;
+
+    for currency, link in CURRENCIES.items():
+        response = requests.get(link, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;})
+        response.raise_for_status()
+        value = re.search(PATTERN, response.text).group(1)
+        final_text += f&#34;{currency}  -  R${value}\n&#34;
+
+    return final_text</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_daily_header"><code class="name flex">
+<span>def <span class="ident">get_daily_header</span></span>(<span>timezone)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes a timezone and returns a header for the daily tweets.</p>
+<p>:param timezone: Desired timezone. (Timezones available at <a href="https://stackoverflow.com/q/13866926.">https://stackoverflow.com/q/13866926.</a>)</p>
+<p>:return: A formated string for the first tweet.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_daily_header(timezone):
+    &#34;&#34;&#34;
+    Takes a timezone and returns a header for the daily tweets.
+
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+
+    :return: A formated string for the first tweet.
+    &#34;&#34;&#34;
+    TIMEZONE = pytz.timezone(timezone)
+    now = datetime.datetime.now(TIMEZONE)
+
+    minute = now.minute
+    hour = now.hour
+    day = now.day
+    month = now.month
+    year = now.year
+
+    if hour &gt;= 0 and hour &lt;= 11:
+        greeting = &#34;Bom dia. &#34;
+    #               Good morning
+    elif hour &gt;= 12 and hour &lt;= 17:
+        greeting = &#34;Boa tarde. &#34;
+    #               Good afternoon
+    elif hour &gt;= 18 and hour &lt;= 23:
+        greeting = &#34;Boa noite. &#34;
+    #               Good evening
+    else:
+        greeting = &#34;&#34;
+
+    header = f&#34;{greeting}\n\nHoje é dia {day:0&gt;2}/{month:0&gt;2}/{year}.\n\nAgora são {hour:0&gt;2}h{minute:0&gt;2} (GMT -04:00).\n\nAtualizações:&#34;
+    #                        Today is the day                            It is (Timewise)               My local timezone   Updates
+    return header</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_every_news_and_name"><code class="name flex">
+<span>def <span class="ident">get_every_news_and_name</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of tuples with websites and news lists.</p>
+<p>:return: List of tuples with the first element being a string with the website name and the second a list with the news.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_every_news_and_name():
+    &#34;&#34;&#34;
+    Returns a list of tuples with websites and news lists.
+
+    :return: List of tuples with the first element being a string with the website name and the second a list with the news.
+    &#34;&#34;&#34;
+    the_economist_list = get_the_economist()
+    the_wall_street_journal_list = get_the_wall_street_journal()
+    o_antagonista_list = get_o_antagonista()
+    insurgere_list = get_insurgere()
+    hacker_news_list = get_hacker_news()
+
+    websites_list = [
+        (&#34;The Economist&#34;, the_economist_list),
+        (&#34;The Wall Street Journal&#34;, the_wall_street_journal_list),
+        (&#34;O Antagonista&#34;, o_antagonista_list),
+        (&#34;Insurgere&#34;, insurgere_list),
+        (&#34;Hacker News&#34;, hacker_news_list),
+    ]
+
+    return websites_list</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_hacker_news"><code class="name flex">
+<span>def <span class="ident">get_hacker_news</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list with The Hacker News's 5 most voted news' links and titles.</p>
+<p>:return: List of strings with the most voted 5 news' links and titles found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_hacker_news():
+    &#34;&#34;&#34;
+    Returns a list with The Hacker News&#39;s 5 most voted news&#39; links and titles.
+
+    :return: List of strings with the most voted 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(r&#34;(&lt;tr class=\&#39;athing\&#39; id=\&#39;\d+\&#39;&gt;.*?\n.*?\n.*?&lt;\/td&gt;&lt;\/tr&gt;)&#34;)
+    LINK_AND_TITLE_PATTERN = re.compile(
+        r&#34;&lt;a href=\&#34;(.+?)\&#34; class=\&#34;storylink\&#34;&gt;(.+?)&lt;\/a&gt;&#34;
+    )
+    VOTES_PATTERN = re.compile(r&#34;(\d+) points&#34;)
+
+    response = requests.get(
+        &#34;https://news.ycombinator.com/news&#34;, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;}
+    )
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    matches_list = list()
+
+    for i in matches:
+        try:
+            link_and_title_matches = re.search(LINK_AND_TITLE_PATTERN, i)
+            link = link_and_title_matches.group(1)
+            title = link_and_title_matches.group(2)
+            votes = re.search(VOTES_PATTERN, i).group(1)
+            matches_list.append({&#34;title&#34;: title, &#34;link&#34;: link, &#34;votes&#34;: votes})
+        except AttributeError:
+            pass
+
+    matches_list = sorted(matches_list, key=lambda x: int(x[&#34;votes&#34;]), reverse=True)
+
+    text_list = list()
+
+    for i in range(5):
+        url = matches_list[i][&#34;link&#34;]
+        if url[:4] != &#34;http&#34;:
+            url = &#34;https://news.ycombinator.com/&#34; + url
+        short_url = shorten_url(url)
+        text = html.unescape(matches_list[i][&#34;title&#34;])
+        votes = matches_list[i][&#34;votes&#34;]
+        text = f&#34;({votes} votos) {text}&#34;
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_insurgere"><code class="name flex">
+<span>def <span class="ident">get_insurgere</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list with Insurgere's first 5 news' links and titles.</p>
+<p>:return: List of strings with the first 5 news' links and titles found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_insurgere():
+    &#34;&#34;&#34;
+    Returns a list with Insurgere&#39;s first 5 news&#39; links and titles.
+
+    :return: List of strings with the first 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(
+        r&#34;&lt;h2 class=\&#34;entry-title\&#34;&gt;&lt;a href=\&#34;(.+?)\&#34; rel=\&#34;bookmark\&#34;&gt;(.+?)&lt;\/a&gt;&lt;\/h2&gt;&#34;
+    )
+
+    headers = {
+        &#34;User-agent&#34;: &#34;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A&#34;
+    }
+    response = requests.get(&#34;https://insurgere.com.br&#34;, headers=headers)
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    text_list = list()
+
+    for i in range(5):
+        url = matches[i][0]
+        short_url = shorten_url(url)
+        text = html.unescape(matches[i][1])
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_my_last_tweet_id"><code class="name flex">
+<span>def <span class="ident">get_my_last_tweet_id</span></span>(<span>api)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes an authenticated Tweepy Api Object and returns the Twitter account's last tweet's id.</p>
+<p>:param api: An authenticated Tweepy Api Object.</p>
+<p>:return: Int with Twitter account's last tweet's id.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_my_last_tweet_id(api):
+    &#34;&#34;&#34;
+    Takes an authenticated Tweepy Api Object and returns the Twitter account&#39;s last tweet&#39;s id.
+
+    :param api: An authenticated Tweepy Api Object.
+
+    :return: Int with Twitter account&#39;s last tweet&#39;s id.
+    &#34;&#34;&#34;
+    for _ in range(3):
+        try:
+            last_tweet = api.user_timeline(id=api.me().id, count=1)[0]
+        except IndexError:
+            time.sleep(3)
+            continue
+        else:
+            break
+    else:
+        raise Exception(&#34;The last tweet was not found.&#34;)
+
+    return last_tweet.id</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_o_antagonista"><code class="name flex">
+<span>def <span class="ident">get_o_antagonista</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list with O Antagonista's first 5 news' links and titles.</p>
+<p>:return: List of strings with the first 5 news' links and titles found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_o_antagonista():
+    &#34;&#34;&#34;
+    Returns a list with O Antagonista&#39;s first 5 news&#39; links and titles.
+
+    :return: List of strings with the first 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(
+        r&#34;&lt;div class=\&#34;article_link\&#34;&gt;.*\n.*&lt;a href=\&#34;(.+?)\&#34; title=\&#34;(.+?)\&#34;.*class=\&#34;link_post\&#34;&gt;&#34;
+    )
+
+    response = requests.get(
+        &#34;https://www.oantagonista.com&#34;, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;}
+    )
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    text_list = list()
+
+    for i in range(5):
+        url = matches[i][0]
+        short_url = shorten_url(url)
+        text = html.unescape(matches[i][1])
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_skips_needed"><code class="name flex">
+<span>def <span class="ident">get_skips_needed</span></span>(<span>schedule, timezone)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes the tweet schedule and the timezone and returns how many time marks should be skipped.</p>
+<p>:param schedule: List generated with the request_schedule_input function.
+:param timezone: Desired timezone. (Timezones available at <a href="https://stackoverflow.com/q/13866926.">https://stackoverflow.com/q/13866926.</a>)</p>
+<p>:return: An int with the needed amount of time marks to be skipped in order to execute the next one in time order.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_skips_needed(schedule, timezone):
+    &#34;&#34;&#34;
+    Takes the tweet schedule and the timezone and returns how many time marks should be skipped.
+
+    :param schedule: List generated with the request_schedule_input function.
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+
+    :return: An int with the needed amount of time marks to be skipped in order to execute the next one in time order.
+    &#34;&#34;&#34;
+    TIMEZONE = pytz.timezone(timezone)
+    current_time = datetime.datetime.now(TIMEZONE)
+    current_hour_and_minute = (current_time.hour, current_time.minute)
+
+    if current_hour_and_minute in schedule:
+        current_index = schedule.index(current_hour_and_minute) + 1
+        comparison_list = list()
+    else:
+        comparison_list = schedule.copy()
+        comparison_list.append(current_hour_and_minute)
+        comparison_list.sort()
+        current_index = comparison_list.index(current_hour_and_minute)
+
+    if (current_index == 0) or (current_index == len(comparison_list)):
+        return 0
+    else:
+        return current_index</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_stock_indexes"><code class="name flex">
+<span>def <span class="ident">get_stock_indexes</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a string with some stocks' share prices.</p>
+<p>:return: Formated string for the stock Indexes reply.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_stock_indexes():
+    &#34;&#34;&#34;
+    Returns a string with some stocks&#39; share prices.
+
+    :return: Formated string for the stock Indexes reply.
+    &#34;&#34;&#34;
+    INDEXES = {
+        &#34;IBOVESPA (BRL)&#34;: &#34;https://br.investing.com/indices/bovespa&#34;,
+        &#34;EWZ (USD)&#34;: &#34;https://br.investing.com/etfs/ishares-brazil-index&#34;,
+        &#34;S&amp;P 500 (USD)&#34;: &#34;https://br.investing.com/indices/us-spx-500&#34;,
+        &#34;DIA (USD)&#34;: &#34;https://br.investing.com/etfs/diamonds-trust&#34;,
+        &#34;Brent Oil (USD)&#34;: &#34;https://br.investing.com/commodities/brent-oil-opinion/&#34;,
+    }
+
+    PATTERN = re.compile(
+        r&#34;&lt;td id=\&#34;_last_\d+\&#34; class=\&#34;pid-\d+-last\&#34;&gt;(\d+(\.\d+)*,\d\d)&lt;\/td&gt;&#34;
+    )
+    PATTERN_2 = re.compile(
+        r&#34;&lt;span class=(.*?)(green|red)Font(.*?)((\+|-)\d+(\.\d+)*,\d\d)(.*?)&lt;\/span&gt;&#34;
+    )
+    PATTERN_3 = re.compile(
+        r&#34;&lt;span class=(.*?)(green|red)Font(.*?)((\+|-)\d+(\.\d+)*,\d\d%)(.*?)&lt;\/span&gt;&#34;
+    )
+
+    final_text = &#34;&#34;
+
+    for index, link in INDEXES.items():
+        response = requests.get(link, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;})
+        response.raise_for_status()
+        value = re.search(PATTERN, response.text).group(1)
+        change = re.search(PATTERN_2, response.text).group(4)
+        change_percentage = re.search(PATTERN_3, response.text).group(4)
+        final_text += f&#34;{index}  -  {value} ({change} | {change_percentage})\n&#34;
+
+    return final_text</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_the_economist"><code class="name flex">
+<span>def <span class="ident">get_the_economist</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list with The Economist's first 5 news' links and titles.</p>
+<p>:return: List of strings with the first 5 news' links and titles found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_the_economist():
+    &#34;&#34;&#34;
+    Returns a list with The Economist&#39;s first 5 news&#39; links and titles.
+
+    :return: List of strings with the first 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(
+        r&#34;&lt;a class=\&#34;headline-link\&#34; href=\&#34;(.+?)\&#34;&gt;&lt;span.*?&gt;(.+?)&lt;\/span&gt;&lt;\/a&gt;&#34;
+    )
+
+    response = requests.get(
+        &#34;https://economist.com&#34;, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;}
+    )
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    text_list = list()
+
+    for i in range(5):
+        url = &#34;https://economist.com&#34; + matches[i][0]
+        short_url = shorten_url(url)
+        text = html.unescape(matches[i][1])
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.get_the_wall_street_journal"><code class="name flex">
+<span>def <span class="ident">get_the_wall_street_journal</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list with The Wall Street Journal's first 5 news' links and titles.</p>
+<p>:return: List of strings with the first 5 news' links and titles found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_the_wall_street_journal():
+    &#34;&#34;&#34;
+    Returns a list with The Wall Street Journal&#39;s first 5 news&#39; links and titles.
+
+    :return: List of strings with the first 5 news&#39; links and titles found.
+    &#34;&#34;&#34;
+    PATTERN = re.compile(r&#34;&lt;a class=\&#34;\&#34; href=\&#34;(.+?)\&#34;&gt;([^&lt;&gt;]+?)&lt;\/a&gt;&#34;)
+
+    response = requests.get(
+        &#34;https://www.wsj.com/&#34;, headers={&#34;User-Agent&#34;: &#34;Mozilla/5.0&#34;}
+    )
+    response.raise_for_status()
+    matches = re.findall(PATTERN, response.text)
+
+    text_list = list()
+
+    for i in range(5):
+        url = matches[i][0]
+        short_url = shorten_url(url)
+        text = html.unescape(matches[i][1])
+        if len(text) &gt;= 100:  # Used to keep tweets under 144 characters.
+            text = text[:98] + &#34;...&#34;
+        text_list.append(f&#34;{text}\n\n{short_url}&#34;)
+
+    return text_list</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Runs the program.</p>
+<p>:param username: Twitter account username without @.
+:param timezone: Desired timezone. (Timezones available at <a href="https://stackoverflow.com/q/13866926.">https://stackoverflow.com/q/13866926.</a>)
+:param API_KEY: Twitter's Api key.
+:param API_SECRET_KEY: Twitter's Api secret key.
+:param ACCESS_TOKEN: Twitter's Api access token.
+:param ACCESS_TOKEN_SECRET: Twitter's Api access token secret.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main(
+    username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
+):
+    &#34;&#34;&#34;
+    Runs the program.
+
+    :param username: Twitter account username without @.
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+    :param API_KEY: Twitter&#39;s Api key.
+    :param API_SECRET_KEY: Twitter&#39;s Api secret key.
+    :param ACCESS_TOKEN: Twitter&#39;s Api access token.
+    :param ACCESS_TOKEN_SECRET: Twitter&#39;s Api access token secret.
+    &#34;&#34;&#34;
+
+    schedule = request_schedule_input()
+
+    skips = get_skips_needed(schedule=schedule, timezone=timezone)
+
+    first_time_looping = True
+
+    while True:
+        schedule_iterator = iter(schedule)
+
+        for hour, minute in schedule_iterator:
+            if first_time_looping:
+                first_time_looping = False
+                if skips == 0:
+                    pass
+                else:
+                    for _ in range(skips - 1):
+                        next(schedule_iterator)
+                    continue
+
+            wait_until(
+                hour=hour, minute=minute, timezone=timezone, advance=60, enablezone=True
+            )
+
+            # GETTING DATA
+
+            for _ in range(3):
+                try:
+                    currencies_text = get_currencies()
+                    stock_indexes_text = get_stock_indexes()
+                    news_list = get_every_news_and_name()
+                    daily_header = get_daily_header(timezone=timezone)
+                except (
+                    requests.exceptions.HTTPError,
+                    requests.exceptions.ConnectionError,
+                ):
+                    time.sleep(3)
+                    continue
+                else:
+                    break
+            else:
+                raise Exception(&#34;Erro tentando conseguir as informações externas.&#34;)
+
+            # TWEETING
+
+            api = authenticate(
+                API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
+            )
+
+            # Daily Header
+            tweet(api, daily_header)
+            time.sleep(5)
+            daily_header_id = get_my_last_tweet_id(api)
+
+            # Currencies
+            reply(api, currencies_text, username, daily_header_id)
+            time.sleep(3)
+
+            # Stock Indexes
+            reply(api, stock_indexes_text, username, daily_header_id)
+            time.sleep(3)
+
+            # News
+            reply(api, &#34;Notícias:&#34;, username, daily_header_id)
+            #           News
+            time.sleep(5)
+            news_id = get_my_last_tweet_id(api)
+
+            for website_name, text_list in news_list:
+                reply(api, website_name, username, news_id)
+                time.sleep(5)
+                website_name_id = get_my_last_tweet_id(api)
+                for text in text_list:
+                    reply(api, text, username, website_name_id)
+                    time.sleep(5)</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.reply"><code class="name flex">
+<span>def <span class="ident">reply</span></span>(<span>api, message, username, status_id)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes an authenticated Tweepy Api Object, a message, an username and a status id and replies it with the message.</p>
+<p>:param api: An authenticated Tweepy Api Object.
+:param message: Desired message to reply.
+:param username: Twitter account username without @.
+:param status_id: The id of the tweet to be replied.</p>
+<p>:return: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reply(api, message, username, status_id):
+    &#34;&#34;&#34;
+    Takes an authenticated Tweepy Api Object, a message, an username and a status id and replies it with the message.
+
+    :param api: An authenticated Tweepy Api Object.
+    :param message: Desired message to reply.
+    :param username: Twitter account username without @.
+    :param status_id: The id of the tweet to be replied.
+
+    :return: None
+    &#34;&#34;&#34;
+    api.update_status(
+        status=&#34;@&#34; + username + &#34;\n&#34; + message,
+        in_reply_to_status_id=status_id,  # The @username must be used for the message to be recognized as a reply.
+    )</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.request_schedule_input"><code class="name flex">
+<span>def <span class="ident">request_schedule_input</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Requests the user the wished schedule of tweets and returns a list with it.</p>
+<p>:return: A sorted list of tuples with the first element being the hour and the second the minute, according to the schedule input by the user.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def request_schedule_input():
+    &#34;&#34;&#34;
+    Requests the user the wished schedule of tweets and returns a list with it.
+
+    :return: A sorted list of tuples with the first element being the hour and the second the minute, according to the schedule input by the user.
+    &#34;&#34;&#34;
+    times_a_day = int(input(&#34;Threads a day: &#34;))
+    assert times_a_day &gt; 0, &#34;Times a day must be greater than 0.&#34;
+
+    print()
+
+    schedule = list()
+
+    for index in range(1, times_a_day + 1):
+
+        if times_a_day &gt; 1:
+            if str(index)[-1] == &#34;1&#34;:
+                ordinal_sign = &#34;st e&#34;
+            elif str(index)[-1] == &#34;2&#34;:
+                ordinal_sign = &#34;nd e&#34;
+            elif str(index)[-1] == &#34;3&#34;:
+                ordinal_sign = &#34;rd e&#34;
+            else:
+                ordinal_sign = &#34;th e&#34;
+        else:
+            index, ordinal_sign = &#34;&#34;, &#34;E&#34;
+
+        hour = int(input(f&#34;{index}{ordinal_sign}xecution hour mark: &#34;))
+        assert 0 &lt;= hour &lt; 24, &#34;Hour invalid.&#34;
+
+        minute = int(input(f&#34;{index}{ordinal_sign}xecution minute mark: &#34;))
+        assert 0 &lt;= minute &lt; 60, &#34;Minute invalid.&#34;
+
+        schedule.append((hour, minute))
+
+        print()
+
+    return sorted(list(set(schedule)))</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.shorten_url"><code class="name flex">
+<span>def <span class="ident">shorten_url</span></span>(<span>url)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes an url and returns it shortened.</p>
+<p>:param url: Desired web address.</p>
+<p>:return: Desired web address shortened. (<a href="http://tinyurl.com/XXXXXXXX">http://tinyurl.com/XXXXXXXX</a>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def shorten_url(url):
+    &#34;&#34;&#34;
+    Takes an url and returns it shortened.
+
+    :param url: Desired web address.
+
+    :return: Desired web address shortened. (http://tinyurl.com/XXXXXXXX)
+    &#34;&#34;&#34;
+    request_url = &#34;http://tinyurl.com/api-create.php?&#34; + urlencode({&#34;url&#34;: url})
+    with contextlib.closing(urlopen(request_url)) as response:
+        return response.read().decode(&#34;utf-8&#34;)</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.tweet"><code class="name flex">
+<span>def <span class="ident">tweet</span></span>(<span>api, message)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes an authenticated Tweepy Api Object, a message and tweets it.</p>
+<p>:param api: An authenticated Tweepy Api Object.
+:param message: Desired message to tweet.</p>
+<p>return: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tweet(api, message):
+    &#34;&#34;&#34;
+    Takes an authenticated Tweepy Api Object, a message and tweets it.
+
+    :param api: An authenticated Tweepy Api Object.
+    :param message: Desired message to tweet.
+
+    return: None
+    &#34;&#34;&#34;
+    api.update_status(status=message)</code></pre>
+</details>
+</dd>
+<dt id="twitterbot.wait_until"><code class="name flex">
+<span>def <span class="ident">wait_until</span></span>(<span>hour, minute, timezone, delay=0, advance=0, enablezone=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Takes an hour mark, a minute mark, and a timezone, and waits until the given time in the given timezone.</p>
+<p>:param hour: Desired hour mark.
+:param minute: Desired minute mark.
+:param timezone: Desired timezone. (Timezones available at <a href="https://stackoverflow.com/q/13866926.">https://stackoverflow.com/q/13866926.</a>)
+:param delay: Optional delay. (0 as default.)
+:param advance: Optional advance. (0 as default.)
+:param enablezone: True: Enables the timezone feature. False: Disables the timezone feature. (False as default.)</p>
+<p>:return: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def wait_until(hour, minute, timezone, delay=0, advance=0, enablezone=False):
+    &#34;&#34;&#34;
+    Takes an hour mark, a minute mark, and a timezone, and waits until the given time in the given timezone.
+
+    :param hour: Desired hour mark.
+    :param minute: Desired minute mark.
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+    :param delay: Optional delay. (0 as default.)
+    :param advance: Optional advance. (0 as default.)
+    :param enablezone: True: Enables the timezone feature. False: Disables the timezone feature. (False as default.)
+
+    :return: None
+    &#34;&#34;&#34;
+    if timezone:
+        TIMEZONE = pytz.timezone(timezone)
+        current_time = datetime.datetime.now(TIMEZONE)
+    else:
+        current_time = datetime.datetime.now()
+
+    # Calculate the remaining time in seconds to complete an hour.
+    minutes_rest = ((59 + minute) - current_time.minute) * 60
+    seconds_rest = 60 - current_time.second
+    rest = minutes_rest + seconds_rest
+
+    if current_time.hour &lt; hour:
+        time_to_be_slept = ((hour - 1) - current_time.hour) * 60 * 60 + rest
+    elif (current_time.hour == hour) and (current_time.minute &lt; minute):
+        time_to_be_slept = rest - 3600
+    else:
+        time_to_be_slept = ((23 + hour) - current_time.hour) * 60 * 60 + rest
+
+    time_to_be_slept = time_to_be_slept + delay - advance
+
+    time_to_be_slept = (
+        0 if time_to_be_slept &lt; 0 else time_to_be_slept
+    )  # Used to keep time nonnegative and to become 0 if negative.
+
+    time.sleep(time_to_be_slept)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="twitterbot.authenticate" href="#twitterbot.authenticate">authenticate</a></code></li>
+<li><code><a title="twitterbot.get_currencies" href="#twitterbot.get_currencies">get_currencies</a></code></li>
+<li><code><a title="twitterbot.get_daily_header" href="#twitterbot.get_daily_header">get_daily_header</a></code></li>
+<li><code><a title="twitterbot.get_every_news_and_name" href="#twitterbot.get_every_news_and_name">get_every_news_and_name</a></code></li>
+<li><code><a title="twitterbot.get_hacker_news" href="#twitterbot.get_hacker_news">get_hacker_news</a></code></li>
+<li><code><a title="twitterbot.get_insurgere" href="#twitterbot.get_insurgere">get_insurgere</a></code></li>
+<li><code><a title="twitterbot.get_my_last_tweet_id" href="#twitterbot.get_my_last_tweet_id">get_my_last_tweet_id</a></code></li>
+<li><code><a title="twitterbot.get_o_antagonista" href="#twitterbot.get_o_antagonista">get_o_antagonista</a></code></li>
+<li><code><a title="twitterbot.get_skips_needed" href="#twitterbot.get_skips_needed">get_skips_needed</a></code></li>
+<li><code><a title="twitterbot.get_stock_indexes" href="#twitterbot.get_stock_indexes">get_stock_indexes</a></code></li>
+<li><code><a title="twitterbot.get_the_economist" href="#twitterbot.get_the_economist">get_the_economist</a></code></li>
+<li><code><a title="twitterbot.get_the_wall_street_journal" href="#twitterbot.get_the_wall_street_journal">get_the_wall_street_journal</a></code></li>
+<li><code><a title="twitterbot.main" href="#twitterbot.main">main</a></code></li>
+<li><code><a title="twitterbot.reply" href="#twitterbot.reply">reply</a></code></li>
+<li><code><a title="twitterbot.request_schedule_input" href="#twitterbot.request_schedule_input">request_schedule_input</a></code></li>
+<li><code><a title="twitterbot.shorten_url" href="#twitterbot.shorten_url">shorten_url</a></code></li>
+<li><code><a title="twitterbot.tweet" href="#twitterbot.tweet">tweet</a></code></li>
+<li><code><a title="twitterbot.wait_until" href="#twitterbot.wait_until">wait_until</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
