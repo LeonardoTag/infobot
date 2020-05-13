@@ -6,7 +6,7 @@
 # It tweets information about currencies prices, stock indexes, and
 # recent news whenever programmed.
 #
-# To adjust it to your use, change the information in the last if
+# To adjust it to your use, change the placeholders in the last if
 # statement to your data.
 #
 # Feel free to use the information in this module however you like.
@@ -21,6 +21,7 @@ import html
 import re
 import sys
 import time
+import urllib
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -45,6 +46,22 @@ except ModuleNotFoundError:
 # UTILITIES
 
 
+def handle_HTTPError(func):
+    def wrap(*args, **kwargs):
+        for _ in range(5):
+            try:
+                return func(*args, **kwargs)
+            except (requests.exceptions.HTTPError, urllib.error.HTTPError):
+                time.sleep(3)
+            else:
+                break
+        else:
+            raise Exception("Connection to external sources timed out.")
+
+    return wrap
+
+
+@handle_HTTPError
 def shorten_url(url):
     """
     Takes an url and returns it shortened.
@@ -54,6 +71,7 @@ def shorten_url(url):
     :return: Desired web address shortened. (http://tinyurl.com/XXXXXXXX)
     """
     request_url = "http://tinyurl.com/api-create.php?" + urlencode({"url": url})
+
     with contextlib.closing(urlopen(request_url)) as response:
         return response.read().decode("utf-8")
 
@@ -209,6 +227,7 @@ def get_daily_header(timezone):
 # CURRENCIES
 
 
+@handle_HTTPError
 def get_currencies():
     """
     Returns a string with some currencies' prices in reais.
@@ -240,6 +259,7 @@ def get_currencies():
 # STOCK INDEXES
 
 
+@handle_HTTPError
 def get_stock_indexes():
     """
     Returns a string with some stocks' share prices.
@@ -280,6 +300,7 @@ def get_stock_indexes():
 # NEWS
 
 
+@handle_HTTPError
 def get_the_economist():
     """
     Returns a list with The Economist's first 5 news' links and titles.
@@ -309,6 +330,7 @@ def get_the_economist():
     return text_list
 
 
+@handle_HTTPError
 def get_the_wall_street_journal():
     """
     Returns a list with The Wall Street Journal's first 5 news' links and titles.
@@ -336,6 +358,7 @@ def get_the_wall_street_journal():
     return text_list
 
 
+@handle_HTTPError
 def get_o_antagonista():
     """
     Returns a list with O Antagonista's first 5 news' links and titles.
@@ -365,6 +388,7 @@ def get_o_antagonista():
     return text_list
 
 
+@handle_HTTPError
 def get_insurgere():
     """
     Returns a list with Insurgere's first 5 news' links and titles.
@@ -395,6 +419,7 @@ def get_insurgere():
     return text_list
 
 
+@handle_HTTPError
 def get_hacker_news():
     """
     Returns a list with The Hacker News's 5 most voted news' links and titles.
@@ -583,22 +608,10 @@ def main(
 
             # GETTING DATA
 
-            for _ in range(3):
-                try:
-                    currencies_text = get_currencies()
-                    stock_indexes_text = get_stock_indexes()
-                    news_list = get_every_news_and_name()
-                    daily_header = get_daily_header(timezone=timezone)
-                except (
-                    requests.exceptions.HTTPError,
-                    requests.exceptions.ConnectionError,
-                ):
-                    time.sleep(3)
-                    continue
-                else:
-                    break
-            else:
-                raise Exception("Erro tentando conseguir as informações externas.")
+            currencies_text = get_currencies()
+            stock_indexes_text = get_stock_indexes()
+            news_list = get_every_news_and_name()
+            daily_header = get_daily_header(timezone=timezone)
 
             # TWEETING
 
@@ -613,11 +626,11 @@ def main(
 
             # Currencies
             reply(api, currencies_text, username, daily_header_id)
-            time.sleep(3)
+            time.sleep(5)
 
             # Stock Indexes
             reply(api, stock_indexes_text, username, daily_header_id)
-            time.sleep(3)
+            time.sleep(5)
 
             # News
             reply(api, "Notícias:", username, daily_header_id)
@@ -636,10 +649,10 @@ def main(
 
 if __name__ == "__main__":
     main(
-        username="username",  # Twitter account username without @.
-        timezone="timezone",  # Timezones available at https://stackoverflow.com/q/13866926
-        API_KEY="XXX",  # Get yours at https://developer.twitter.com/apps
-        API_SECRET_KEY="XXX",  # Get yours at https://developer.twitter.com/apps
-        ACCESS_TOKEN="XXX",  # Get yours at https://developer.twitter.com/apps
-        ACCESS_TOKEN_SECRET="XXX",  # Get yours at https://developer.twitter.com/apps
+        username="PLACEHOLDER",  # Twitter account username without @.
+        timezone="PLACEHOLDER",  # Timezones available at https://stackoverflow.com/q/13866926
+        API_KEY="PLACEHOLDER",  # Get yours at https://developer.twitter.com/apps
+        API_SECRET_KEY="PLACEHOLDER",  # Get yours at https://developer.twitter.com/apps
+        ACCESS_TOKEN="PLACEHOLDER",  # Get yours at https://developer.twitter.com/apps
+        ACCESS_TOKEN_SECRET="PLACEHOLDER",  # Get yours at https://developer.twitter.com/apps
     )
