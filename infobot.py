@@ -1,17 +1,18 @@
-# Created by Leonardo F. Tag.
-#
-# A Twitter bot programmed for my personal use, hence the Portuguese
-# and R$ signs.
-#
-# It tweets information about currencies prices, stock indexes, and
-# recent news whenever programmed.
-#
-# To adjust it to your use, change the placeholders in the last if
-# statement to your data.
-#
-# Feel free to use the information in this module however you like.
-#
-# No copyright applies.
+"""Created by Leonardo F. Tag.
+
+A Twitter bot programmed for my personal use, hence the Portuguese
+and R$ signs.
+
+It tweets information about currencies prices, stock indexes, and
+recent news whenever programmed.
+
+To adjust it to your use, change the information in the last if
+statement to your data.
+
+Feel free to use the information in this module however you like.
+
+No copyright applies."""
+
 
 # IMPORTING MODULES FROM THE STANDARD LIBRARY
 
@@ -19,7 +20,6 @@ import contextlib
 import datetime
 import html
 import re
-import sys
 import time
 import urllib
 from urllib.parse import urlencode
@@ -46,7 +46,13 @@ except ModuleNotFoundError:
 # UTILITIES
 
 
-def handle_HTTPError(func):
+class CouldNotConnectError(Exception):
+    """Raised when there was a problem with the connection."""
+
+
+def handle_http_error(func):
+    """Decorator that handles http errors."""
+
     def wrap(*args, **kwargs):
         for _ in range(5):
             try:
@@ -56,12 +62,12 @@ def handle_HTTPError(func):
             else:
                 break
         else:
-            raise Exception("Connection to external sources timed out.")
+            raise CouldNotConnectError("Connection to external sources timed out.")
 
     return wrap
 
 
-@handle_HTTPError
+@handle_http_error
 def shorten_url(url):
     """
     Takes an url and returns it shortened.
@@ -89,7 +95,7 @@ def wait_until(hour, minute, timezone, delay=0, advance=0, enablezone=False):
 
     :return: None
     """
-    if timezone:
+    if enablezone:
         TIMEZONE = pytz.timezone(timezone)
         current_time = datetime.datetime.now(TIMEZONE)
     else:
@@ -219,15 +225,19 @@ def get_daily_header(timezone):
     else:
         greeting = ""
 
-    header = f"{greeting}\n\nHoje é dia {day:0>2}/{month:0>2}/{year}.\n\nAgora são {hour:0>2}h{minute:0>2} (GMT -04:00).\n\nAtualizações:"
-    #                        Today is the day                            It is (Timewise)               My local timezone   Updates
+    header = (
+        f"{greeting}\n\nHoje é dia {day:0>2}/{month:0>2}/{year}.\n\n"
+        #               Today is the day
+        + f"Agora são {hour:0>2}h{minute:0>2} (GMT -04:00).\n\nAtualizações:"
+        #  It is (Timewise)               My local timezone   Updates
+    )
     return header
 
 
 # CURRENCIES
 
 
-@handle_HTTPError
+@handle_http_error
 def get_currencies():
     """
     Returns a string with some currencies' prices in reais.
@@ -259,7 +269,7 @@ def get_currencies():
 # STOCK INDEXES
 
 
-@handle_HTTPError
+@handle_http_error
 def get_stock_indexes():
     """
     Returns a string with some stocks' share prices.
@@ -300,7 +310,7 @@ def get_stock_indexes():
 # NEWS
 
 
-@handle_HTTPError
+@handle_http_error
 def get_the_economist():
     """
     Returns a list with The Economist's first 5 news' links and titles.
@@ -330,7 +340,7 @@ def get_the_economist():
     return text_list
 
 
-@handle_HTTPError
+@handle_http_error
 def get_the_wall_street_journal():
     """
     Returns a list with The Wall Street Journal's first 5 news' links and titles.
@@ -358,7 +368,7 @@ def get_the_wall_street_journal():
     return text_list
 
 
-@handle_HTTPError
+@handle_http_error
 def get_o_antagonista():
     """
     Returns a list with O Antagonista's first 5 news' links and titles.
@@ -388,7 +398,7 @@ def get_o_antagonista():
     return text_list
 
 
-@handle_HTTPError
+@handle_http_error
 def get_insurgere():
     """
     Returns a list with Insurgere's first 5 news' links and titles.
@@ -419,7 +429,7 @@ def get_insurgere():
     return text_list
 
 
-@handle_HTTPError
+@handle_http_error
 def get_hacker_news():
     """
     Returns a list with The Hacker News's 5 most voted news' links and titles.
@@ -490,6 +500,29 @@ def get_every_news_and_name():
     ]
 
     return websites_list
+
+
+# GET DATA
+
+
+def get_data(timezone):
+    """Gets every data bit needed from the web and handles http errors."""
+    for _ in range(5):
+        try:
+            currencies_text = get_currencies()
+            stock_indexes_text = get_stock_indexes()
+            news_list = get_every_news_and_name()
+            daily_header = get_daily_header(timezone=timezone)
+        except CouldNotConnectError:
+            time.sleep(300)
+        else:
+            break
+    else:
+        raise Exception("Timed out.")
+    return (currencies_text, stock_indexes_text, news_list, daily_header)
+
+
+# TWEET EVERYTHING
 
 
 # SCHEDULE
@@ -570,7 +603,7 @@ def get_skips_needed(schedule, timezone):
 
 
 def main(
-    username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
+        username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
 ):
     """
     Runs the program.
@@ -608,10 +641,9 @@ def main(
 
             # GETTING DATA
 
-            currencies_text = get_currencies()
-            stock_indexes_text = get_stock_indexes()
-            news_list = get_every_news_and_name()
-            daily_header = get_daily_header(timezone=timezone)
+            currencies_text, stock_indexes_text, news_list, daily_header = get_data(
+                timezone=timezone
+            )
 
             # TWEETING
 
@@ -649,10 +681,10 @@ def main(
 
 if __name__ == "__main__":
     main(
-        username="PLACEHOLDER",  # Twitter account username without @.
-        timezone="PLACEHOLDER",  # Timezones available at https://stackoverflow.com/q/13866926
-        API_KEY="PLACEHOLDER",  # Get yours at https://developer.twitter.com/apps
-        API_SECRET_KEY="PLACEHOLDER",  # Get yours at https://developer.twitter.com/apps
-        ACCESS_TOKEN="PLACEHOLDER",  # Get yours at https://developer.twitter.com/apps
-        ACCESS_TOKEN_SECRET="PLACEHOLDER",  # Get yours at https://developer.twitter.com/apps
+        username="username",  # Twitter account username without @.
+        timezone="timezone",  # Timezones available at https://stackoverflow.com/q/13866926
+        API_KEY="XXX",  # Get yours at https://developer.twitter.com/apps
+        API_SECRET_KEY="XXX",  # Get yours at https://developer.twitter.com/apps
+        ACCESS_TOKEN="XXX",  # Get yours at https://developer.twitter.com/apps
+        ACCESS_TOKEN_SECRET="XXX",  # Get yours at https://developer.twitter.com/apps
     )
