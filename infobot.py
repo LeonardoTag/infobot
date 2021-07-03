@@ -52,7 +52,7 @@ except ModuleNotFoundError:
 
 
 def main(
-        username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, text_message=False, TWILIO_ACCOUNT_SID="", TWILIO_AUTH_TOKEN="", TWILIO_NUMBER="", MOBILE_NUMBER="",
+        username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, CURRENCY_CONVERTER_KEY, text_message=False, TWILIO_ACCOUNT_SID="", TWILIO_AUTH_TOKEN="", TWILIO_NUMBER="", MOBILE_NUMBER="",
 ):
     """
     Runs the program.
@@ -72,7 +72,6 @@ def main(
     ERROR_MESSAGE = """There was an error while executing infobot.py:"""
 
     try:
-
         schedule = request_schedule_input()
 
         skips = get_skips_needed(schedule=schedule, timezone=timezone)
@@ -94,10 +93,15 @@ def main(
 
                 wait_until(hour=hour, minute=minute, timezone=timezone, enablezone=True)
 
+                print(f"It's {hour}:{minute:0>2}! Starting...")
+
                 # GETTING DATA
 
+                print("Gathering data...")
+
                 currencies_text, stock_indexes_text, news_list, daily_header = get_data(
-                    timezone=timezone
+                    timezone=timezone,
+                    CURRENCY_CONVERTER_KEY=CURRENCY_CONVERTER_KEY,
                 )
 
                 # TWEETING
@@ -107,6 +111,7 @@ def main(
                 )
 
                 # Daily Header
+                print("Tweeting...")
                 tweet(api, daily_header)
                 time.sleep(WAIT_BEFORE_NEXT_TWEET)
                 daily_header_id = get_my_last_tweet_id(api)
@@ -132,6 +137,8 @@ def main(
                     for text in text_list:
                         reply(api, text, username, website_name_id)
                         time.sleep(WAIT_BEFORE_NEXT_TWEET)
+
+                print("Everything went well. Waiting for next iteration...")
     except Exception as error:
         if text_message:
             while True:
@@ -159,10 +166,11 @@ def handle_http_error(func):
 
     def wrap(*args, **kwargs):
         for _ in range(1200):
-            print("HANDLING!")
             try:
                 return func(*args, **kwargs)
-            except (requests.exceptions.HTTPError, urllib.error.HTTPError):
+            except (requests.exceptions.HTTPError, urllib.error.HTTPError) as err:
+                print("HANDLING!")
+                print(str(err))
                 time.sleep(3)
             else:
                 break
@@ -358,8 +366,7 @@ def get_daily_header(timezone):
 # CURRENCIES
 
 
-@handle_http_error
-def get_currencies():
+def get_currencies(CURRENCY_CONVERTER_KEY):
     """
     Returns a string with some currencies' prices in reais.
 
@@ -406,7 +413,7 @@ def get_stock_indexes():
     }
 
     PATTERN = re.compile(
-        r"<td id=\"_last_\d+\" class=\"pid-\d+-last\">(\d+(\.\d+)*,\d\d)<\/td>"
+        r"<span class=\"arial_26 inlineblock pid-\d+-last\" id=\"last_last\".*?>(.*?)</span>"
     )
     PATTERN_2 = re.compile(
         r"<span class=(.*?)(green|red)Font(.*?)((\+|-)\d+(\.\d+)*,\d\d)(.*?)<\/span>"
@@ -468,7 +475,7 @@ def get_the_wall_street_journal():
 
     :return: List of strings with the first 5 news' links and titles found.
     """
-    PATTERN = re.compile(r"<a class=\"\" href=\"(.+?)\">([^<>]+?)<\/a>")
+    PATTERN = re.compile(r"<a class=\"\" href=\"(https://www.wsj.com/articles/.*?)\"><span class=\"WSJTheme--headlineText--He1ANr9C \">(.*?)</span></a>")
 
     response = requests.get(
         "https://www.wsj.com/", headers={"User-Agent": "Mozilla/5.0"}
@@ -501,7 +508,7 @@ def get_o_antagonista():
     )
 
     response = requests.get(
-        "www.oantagonista.com", headers={"User-Agent": "Mozilla/5.0"}
+            "https://www.oantagonista.com", headers={"User-Agent": "Mozilla/5.0"}
     )
     response.raise_for_status()
     matches = re.findall(PATTERN, response.text)
@@ -608,15 +615,15 @@ def get_every_news_and_name():
     """
     the_economist_list = get_the_economist()
     the_wall_street_journal_list = get_the_wall_street_journal()
-    o_antagonista_list = get_o_antagonista()
-    insurgere_list = get_insurgere()
+    #o_antagonista_list = get_o_antagonista()
+    #insurgere_list = get_insurgere()
     hacker_news_list = get_hacker_news()
 
     websites_list = [
         ("The Economist", the_economist_list),
         ("The Wall Street Journal", the_wall_street_journal_list),
-        ("O Antagonista", o_antagonista_list),
-        ("Insurgere", insurgere_list),
+        #("O Antagonista", o_antagonista_list),
+        #("Insurgere", insurgere_list),
         ("Hacker News", hacker_news_list),
     ]
 
@@ -626,11 +633,11 @@ def get_every_news_and_name():
 # GET DATA
 
 
-def get_data(timezone):
+def get_data(timezone, CURRENCY_CONVERTER_KEY):
     """Gets every data bit needed from the web and handles http errors."""
     for _ in range(5):
         try:
-            currencies_text = get_currencies()
+            currencies_text = get_currencies(CURRENCY_CONVERTER_KEY)
             stock_indexes_text = get_stock_indexes()
             news_list = get_every_news_and_name()
             daily_header = get_daily_header(timezone=timezone)
@@ -679,8 +686,9 @@ def request_schedule_input():
         hour = int(input(f"{index}{ordinal_sign}xecution hour mark: "))
         assert 0 <= hour < 24, "Hour invalid."
 
-        minute = int(input(f"{index}{ordinal_sign}xecution minute mark: "))
-        assert 0 <= minute < 60, "Minute invalid."
+        minute = input(f"{index}{ordinal_sign}xecution minute mark: ")
+        minute = 0 if minute == "" else int(minute)
+        assert (0 <= minute < 60) or (minute == ""), "Minute invalid."
 
         schedule.append((hour, minute))
 
@@ -725,13 +733,14 @@ def get_skips_needed(schedule, timezone):
 
 if __name__ == "__main__":
     main(
-        username="dailyinfobot",  # Twitter account username without @.
-        timezone="America/Cuiaba",  # Timezones available at https://stackoverflow.com/q/13866926
+        username="XXX",  # Twitter account username without @.
+        timezone="XXX",  # Timezones available at https://stackoverflow.com/q/13866926
         API_KEY="XXX",  # Get yours at https://developer.twitter.com/apps
         API_SECRET_KEY="XXX",  # Get yours at https://developer.twitter.com/apps
         ACCESS_TOKEN="XXX",  # Get yours at https://developer.twitter.com/apps
         ACCESS_TOKEN_SECRET="XXX",  # Get yours at https://developer.twitter.com/apps
-        text_message=True,  # Whether you want it to send you a text message if it fails.
+        CURRENCY_CONVERTER_KEY="XXX", # Get yours at https://free.currencyconverterapi.com/free-api-key
+        text_message=False,  # Whether you want it to send you a text message if it fails.
         TWILIO_ACCOUNT_SID="XXX",  # Get yours at https://www.twilio.com/sms
         TWILIO_AUTH_TOKEN="XXX",  # Get yours at https://www.twilio.com/sms
         TWILIO_NUMBER="XXX",  # Get yours at https://www.twilio.com/sms
