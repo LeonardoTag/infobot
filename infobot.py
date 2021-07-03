@@ -42,6 +42,110 @@ try:
 except ModuleNotFoundError:
     raise Exception("Pytz not installed. (pip3 install pytz)")
 
+try:
+    from twilio.rest import Client
+except ModuleNotFoundError:
+    raise Exception("Twilio not installed. (pip3 install twilio)")
+
+
+# MAIN FUNCTION
+
+
+def main(
+        username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, text_message=False, TWILIO_ACCOUNT_SID="", TWILIO_AUTH_TOKEN="", TWILIO_NUMBER="", MOBILE_NUMBER="",
+):
+    """
+    Runs the program.
+
+    :param username: Twitter account username without @.
+    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
+    :param API_KEY: Twitter's Api key.
+    :param API_SECRET_KEY: Twitter's Api secret key.
+    :param ACCESS_TOKEN: Twitter's Api access token.
+    :param ACCESS_TOKEN_SECRET: Twitter's Api access token secret.
+
+    :return: None
+    """
+
+    WAIT_BEFORE_NEXT_TWEET = 5
+
+    ERROR_MESSAGE = """There was an error while executing infobot.py:"""
+
+    try:
+
+        schedule = request_schedule_input()
+
+        skips = get_skips_needed(schedule=schedule, timezone=timezone)
+
+        first_time_looping = True
+
+        while True:
+            schedule_iterator = iter(schedule)
+
+            for hour, minute in schedule_iterator:
+                if first_time_looping:
+                    first_time_looping = False
+                    if skips == 0:
+                        pass
+                    else:
+                        for _ in range(skips - 1):
+                            next(schedule_iterator)
+                        continue
+
+                wait_until(hour=hour, minute=minute, timezone=timezone, enablezone=True)
+
+                # GETTING DATA
+
+                currencies_text, stock_indexes_text, news_list, daily_header = get_data(
+                    timezone=timezone
+                )
+
+                # TWEETING
+
+                api = authenticate(
+                    API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
+                )
+
+                # Daily Header
+                tweet(api, daily_header)
+                time.sleep(WAIT_BEFORE_NEXT_TWEET)
+                daily_header_id = get_my_last_tweet_id(api)
+
+                # Currencies
+                reply(api, currencies_text, username, daily_header_id)
+                time.sleep(WAIT_BEFORE_NEXT_TWEET)
+
+                # Stock Indexes
+                reply(api, stock_indexes_text, username, daily_header_id)
+                time.sleep(WAIT_BEFORE_NEXT_TWEET)
+
+                # News
+                reply(api, "Notícias:", username, daily_header_id)
+                #           News
+                time.sleep(WAIT_BEFORE_NEXT_TWEET)
+                news_id = get_my_last_tweet_id(api)
+
+                for website_name, text_list in news_list:
+                    reply(api, website_name, username, news_id)
+                    time.sleep(WAIT_BEFORE_NEXT_TWEET)
+                    website_name_id = get_my_last_tweet_id(api)
+                    for text in text_list:
+                        reply(api, text, username, website_name_id)
+                        time.sleep(WAIT_BEFORE_NEXT_TWEET)
+    except Exception as error:
+        if text_message:
+            while True:
+                try:
+                    send_me_an_text_message(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_NUMBER, MOBILE_NUMBER, ERROR_MESSAGE + "\n\n" + str(error))
+                except requests.exceptions.ConnectionError:
+                    pass
+                else:
+                    break
+        raise error
+
+
+# DEFINITIONS
+
 
 # UTILITIES
 
@@ -54,7 +158,8 @@ def handle_http_error(func):
     """Decorator that handles http errors."""
 
     def wrap(*args, **kwargs):
-        for _ in range(5):
+        for _ in range(1200):
+            print("HANDLING!")
             try:
                 return func(*args, **kwargs)
             except (requests.exceptions.HTTPError, urllib.error.HTTPError):
@@ -80,6 +185,22 @@ def shorten_url(url):
 
     with contextlib.closing(urlopen(request_url)) as response:
         return response.read().decode("utf-8")
+
+
+def send_me_an_text_message(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_NUMBER, MOBILE_NUMBER, text):
+    """
+    Sends a text message through twilio.
+
+    :param TWILIO_ACCOUNT_SID: Twilio Account SID.
+    :param TWILIO_AUTH_TOKEN: Twilio Auth Token.
+    :param TWILIO_NUMBER: Twilio number.
+    :param MOBILE_NUMBER: Your mobile number.
+    :param text: Text message to send.
+
+    :return: None
+    """
+    twilio_client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    twilio_client.messages.create(body=text, from_=TWILIO_NUMBER, to=MOBILE_NUMBER)
 
 
 def wait_until(hour, minute, timezone, delay=0, advance=0, enablezone=False):
@@ -380,7 +501,7 @@ def get_o_antagonista():
     )
 
     response = requests.get(
-        "https://www.oantagonista.com", headers={"User-Agent": "Mozilla/5.0"}
+        "www.oantagonista.com", headers={"User-Agent": "Mozilla/5.0"}
     )
     response.raise_for_status()
     matches = re.findall(PATTERN, response.text)
@@ -599,92 +720,20 @@ def get_skips_needed(schedule, timezone):
         return current_index
 
 
-# MAIN FUNCTION
-
-
-def main(
-        username, timezone, API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
-):
-    """
-    Runs the program.
-
-    :param username: Twitter account username without @.
-    :param timezone: Desired timezone. (Timezones available at https://stackoverflow.com/q/13866926.)
-    :param API_KEY: Twitter's Api key.
-    :param API_SECRET_KEY: Twitter's Api secret key.
-    :param ACCESS_TOKEN: Twitter's Api access token.
-    :param ACCESS_TOKEN_SECRET: Twitter's Api access token secret.
-
-    :return: None
-    """
-
-    schedule = request_schedule_input()
-
-    skips = get_skips_needed(schedule=schedule, timezone=timezone)
-
-    first_time_looping = True
-
-    while True:
-        schedule_iterator = iter(schedule)
-
-        for hour, minute in schedule_iterator:
-            if first_time_looping:
-                first_time_looping = False
-                if skips == 0:
-                    pass
-                else:
-                    for _ in range(skips - 1):
-                        next(schedule_iterator)
-                    continue
-
-            wait_until(hour=hour, minute=minute, timezone=timezone, enablezone=True)
-
-            # GETTING DATA
-
-            currencies_text, stock_indexes_text, news_list, daily_header = get_data(
-                timezone=timezone
-            )
-
-            # TWEETING
-
-            api = authenticate(
-                API_KEY, API_SECRET_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET
-            )
-
-            # Daily Header
-            tweet(api, daily_header)
-            time.sleep(5)
-            daily_header_id = get_my_last_tweet_id(api)
-
-            # Currencies
-            reply(api, currencies_text, username, daily_header_id)
-            time.sleep(5)
-
-            # Stock Indexes
-            reply(api, stock_indexes_text, username, daily_header_id)
-            time.sleep(5)
-
-            # News
-            reply(api, "Notícias:", username, daily_header_id)
-            #           News
-            time.sleep(5)
-            news_id = get_my_last_tweet_id(api)
-
-            for website_name, text_list in news_list:
-                reply(api, website_name, username, news_id)
-                time.sleep(5)
-                website_name_id = get_my_last_tweet_id(api)
-                for text in text_list:
-                    reply(api, text, username, website_name_id)
-                    time.sleep(5)
+# CALLING MAIN FUNCTION
 
 
 if __name__ == "__main__":
     main(
-        username="username",  # Twitter account username without @.
-        timezone="timezone",  # Timezones available at https://stackoverflow.com/q/13866926
+        username="dailyinfobot",  # Twitter account username without @.
+        timezone="America/Cuiaba",  # Timezones available at https://stackoverflow.com/q/13866926
         API_KEY="XXX",  # Get yours at https://developer.twitter.com/apps
         API_SECRET_KEY="XXX",  # Get yours at https://developer.twitter.com/apps
         ACCESS_TOKEN="XXX",  # Get yours at https://developer.twitter.com/apps
         ACCESS_TOKEN_SECRET="XXX",  # Get yours at https://developer.twitter.com/apps
+        text_message=True,  # Whether you want it to send you a text message if it fails.
+        TWILIO_ACCOUNT_SID="XXX",  # Get yours at https://www.twilio.com/sms
+        TWILIO_AUTH_TOKEN="XXX",  # Get yours at https://www.twilio.com/sms
+        TWILIO_NUMBER="XXX",  # Get yours at https://www.twilio.com/sms
+        MOBILE_NUMBER="XXX",  # Your mobile number
     )
